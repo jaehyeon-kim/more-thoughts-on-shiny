@@ -1,0 +1,13 @@
+version: '3'
+services:
+  demo:
+    image: rockerextra/shiny-async-dev:3.4
+    command: /init
+    privileged: true
+    volumes:
+        - ./shiny:/home/rstudio/shiny
+        - ./api:/home/rstudio/api
+    ports:
+        - "8787:8787"
+        - "3838:3838"
+        - "8000:8000"
