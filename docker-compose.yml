@@ -1,34 +1,18 @@
 version: '3'
 services:
-  shiny:
-    image: rockerextra/shiny-async-dev:3.4
-    command: /init
-    privileged: true
-    volumes:
-      - ./shiny:/srv/shiny-server/shiny
-    ports:
-      - "3838:3838"
-  rserve:
+  demo:
     build:
       context: .
-      dockerfile: Dockerfile-rserve
+      dockerfile: Dockerfile
     command: /init
     privileged: true
     volumes:
       - ./api:/home/rstudio/api
+      - ./javascript:/home/rstudio/javascript
+      - ./shiny:/srv/shiny-server/shiny
     ports:
       - "8000:8000"
-  javascript:
-    build:
-      context: .
-      dockerfile: Dockerfile-javascript
-    command: /init
-    privileged: true
-    volumes:
-      - ./javascript:/home/rstudio/javascript
-    ports:
       - "7000:7000"
       - "8787:8787"
-    links:
-      - rserve
+      - "3838:3838"
 
