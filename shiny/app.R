@@ -1,6 +1,7 @@
 library(magrittr)
 library(DT)
 library(highcharter)
+library(plotly)
 
 library(shiny)
 
@@ -12,17 +13,21 @@ tab <- tabPanel(
     title = 'Demo',
     fluidPage(
       fluidRow(
-        column(6,
+        column(4,
                actionButton('dt', 'update')),
-        column(6,
-               actionButton('chart', 'update'))
+        column(4,
+               actionButton('highchart', 'update')),
+        column(4,
+               actionButton('plotly', 'update'))
       ),
       br(),
       fluidRow(
-        column(6,
+        column(4,
                dataTableOutput('dt_out')),
-        column(6,
-               highchartOutput('chart_out'))
+        column(4,
+               highchartOutput('highchart_out')),
+        column(4,
+               plotlyOutput('plotly_out'))
       )      
     )
 )
@@ -43,17 +48,26 @@ server <- function(input, output, session) {
           ))
     })
     
-    output$dt_out <- renderDataTable(dt_df())
-    
-    plot_df <- eventReactive(input$chart, {
+    highchart_df <- eventReactive(input$highchart, {
       get_iris()
     })
-
-    output$chart_out <- renderHighchart({
-      plot_df() %...>% 
-        hchart('scatter', hcaes(x = Sepal.Length, y = Sepal.Width, group = Species)) %...>%
+    
+    plotly_df <- eventReactive(input$plotly, {
+      get_iris()
+    })
+    
+    output$dt_out <- renderDataTable(dt_df())
+    
+    output$highchart_out <- renderHighchart({
+      highchart_df() %...>% 
+        hchart('scatter', hcaes(x = 'Sepal.Length', y = 'Sepal.Width', group = 'Species')) %...>%
         hc_title(text = 'Iris Scatter')
       })
+
+    output$plotly_out <- renderPlotly({
+      plotly_df() %...>%
+        plot_ly(x = ~Sepal.Length, y = ~Sepal.Width, z = ~Petal.Length, color = ~Species)
+    })
 }
 
 shinyApp(ui = ui, server = server)

@@ -2,6 +2,7 @@ library(magrittr)
 library(htmlwidgets)
 library(DT)
 library(highcharter)
+library(plotly)
 
 update_dep_path <- function(dep, libdir = 'lib') {
   dir <- dep$src$file
@@ -67,27 +68,32 @@ write_widget <- function(w, element_id, type = NULL, cdn = NULL, output_path = N
   }
 }
 
-get_iris <- function(show_all = FALSE) {
+get_iris <- function(get_all = FALSE) {
   Sys.sleep(2)
-  if (!show_all) {
+  if (!get_all) {
     iris[sample(1:nrow(iris), 10),]    
   } else {
     iris
   }
 }
 
-htm <- function(element_id, type, show_all = FALSE, cdn = 'public', ...) {
-  dat <- get_iris(show_all)
+widget <- function(element_id, type, get_all = FALSE, cdn = 'public', ...) {
+  dat <- get_iris(get_all)
   if (grepl('dt', element_id)) {
     w <- dat %>%
       datatable(options = list(
         pageLength = 5,
         lengthMenu = c(5, 10)
       ))
-  } else {
+  } else if (grepl('highchart', element_id)) {
     w <- dat %>% 
-      hchart('scatter', hcaes(x = Sepal.Length, y = Sepal.Width, group = Species)) %>%
+      hchart('scatter', hcaes(x = 'Sepal.Length', y = 'Sepal.Width', group = 'Species')) %>%
       hc_title(text = 'Iris Scatter')
+  } else if (grepl('plotly', element_id)) {
+    w <- dat %>%
+      plot_ly(x = ~Sepal.Length, y = ~Sepal.Width, z = ~Petal.Length, color = ~Species)
+  } else {
+    stop('Unexpected element')
   }
   write_widget(w, element_id, type, cdn)
 }

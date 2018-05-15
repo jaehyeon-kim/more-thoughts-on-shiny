@@ -1,3 +1,5 @@
+source('/home/rstudio/api/widget-src.R')
+
 parse_headers <- function(headers) {
   ## process headers to pull out request method (if supplied) and cookies
   if (is.raw(headers)) headers <- rawToChar(headers)
