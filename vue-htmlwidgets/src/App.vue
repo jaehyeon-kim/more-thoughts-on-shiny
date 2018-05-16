@@ -2,7 +2,7 @@
   <v-app>
     <v-toolbar dense color="light-blue" dark fixed app>
       <v-toolbar-title>
-          Vue - mounted
+          Vue - htmlwidgets
       </v-toolbar-title>
     </v-toolbar>
     <v-content>

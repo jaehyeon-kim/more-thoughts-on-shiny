@@ -2,7 +2,7 @@
     <v-container fluid>
         <v-layout row wrap>
             <v-flex xs1 sm2 md2>
-                <div style="height: 400px">
+                <div style="height: 400px;">
                     <v-btn 
                         @click="update"
                         color="primary"
