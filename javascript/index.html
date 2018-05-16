@@ -1,17 +1,17 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<script type="application/shiny-singletons"></script>
-<script type="application/html-dependencies">json2[2014.02.04];jquery[1.12.4];shiny[1.0.5.9000];htmlwidgets[0.9];datatables-css[0.0.0];datatables-binding[0.2.12];crosstalk[1.0.0];proj4js[2.3.15];highcharts[5.0.6];fontawesome[4.5.0];htmlwdgtgrid[1];highchart-binding[0.5.0];plotly-binding[4.7.1.9000];bootstrap[3.3.7]</script>
-<script src="/public/shared/json2-min.js"></script>
-<script src="/public/shared/jquery.min.js"></script>
+<meta charset='utf-8'/>
 <script src="/public/htmlwidgets/htmlwidgets.js"></script>
+<!-- need a shared JQuery lib -->
+<script src="/public/shared/jquery.min.js"></script>
+<!-- DT -->
+<link href="/public/datatables/css/datatables-crosstalk.css" rel="stylesheet" />
 <script src="/public/datatables/datatables.js"></script>
-<link href="/public/crosstalk/css/crosstalk.css" rel="stylesheet" />
-<script src="/public/crosstalk/js/crosstalk.min.js"></script>
+<link href="/public/datatables/lib/datatables/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="/public/datatables/lib/datatables/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="/public/datatables/lib/datatables/js/jquery.dataTables.min.js"></script>
+<!-- highchater -->
 <script src="/public/highcharter/lib/proj4js/proj4.js"></script>
 <link href="/public/highcharter/lib/highcharts-5.0.6/css/motion.css" rel="stylesheet" />
 <script src="/public/highcharter/lib/highcharts-5.0.6/highstock.js"></script>
@@ -43,115 +43,143 @@
 <link href="/public/highcharter/lib/font-awesome-4.5.0/font-awesome.min.css" rel="stylesheet" />
 <link href="/public/highcharter/lib/htmlwdgtgrid/htmlwdgtgrid.css" rel="stylesheet" />
 <script src="/public/highcharter/highchart.js"></script>
+<!-- plotly -->
 <script src="/public/plotly/plotly.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script src="/public/plotly/lib/typedarray/typedarray.min.js"></script>
+<link href="/public/plotly/lib/plotlyjs/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="/public/plotly/lib/plotlyjs/plotly-latest.min.js"></script>
+<!-- crosstalk -->
+<link href="/public/crosstalk/css/crosstalk.css" rel="stylesheet" />
+<script src="/public/crosstalk/js/crosstalk.min.js"></script>
+<!-- bootstrap, etc -->
 <link href="/public/shared/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 <script src="/public/shared/bootstrap/js/bootstrap.min.js"></script>
 <script src="/public/shared/bootstrap/shim/html5shiv.min.js"></script>
-<script src="/public/shared/bootstrap/shim/respond.min.js"></script>  <title>Async Shiny</title>
-
+<script src="/public/shared/bootstrap/shim/respond.min.js"></script>  
 </head>
-
 <body>
   <nav class="navbar navbar-default navbar-static-top" role="navigation">
     <div class="container-fluid">
       <div class="navbar-header">
-        <span class="navbar-brand">Async Shiny</span>
+        <span class="navbar-brand">Htmlwidgets + RServe</span>
       </div>
-      <ul class="nav navbar-nav" data-tabsetid="2529">
+      <ul class="nav navbar-nav" data-tabsetid="6616">
         <li class="active">
-          <a href="#tab-2529-1" data-toggle="tab" data-value="Demo">Demo</a>
+          <a href="#tab-6616-1" data-toggle="tab" data-value="Demo">Demo</a>
         </li>
       </ul>
     </div>
   </nav>
   <div class="container-fluid">
-    <div class="tab-content" data-tabsetid="2529">
-      <div class="tab-pane active" data-value="Demo" id="tab-2529-1">
+    <div class="tab-content" data-tabsetid="6616">
+      <div class="tab-pane active" data-value="Demo" id="tab-6616-1">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-sm-4">
-              <button id="dt" type="button" class="btn btn-default action-button">update</button>
-            </div>
-            <div class="col-sm-4">
-              <button id="highchart" type="button" class="btn btn-default action-button">update</button>
-            </div>
-            <div class="col-sm-4">
-              <button id="plotly" type="button" class="btn btn-default action-button">update</button>
+            <div style="height: 400px;">
+              <div class="col-sm-2">
+                <button id="dt" type="button" class="btn btn-default action-button">update data table</button>
+              </div>
+              <div class="col-sm-10">
+                  <div id="htmlwidget_container_dt_out">
+                    <div id="htmlwidget_dt_out" style="width:100%;height:100%;" class="datatables html-widget"></div>
+                  </div>
+              </div>
             </div>
           </div>
-          <br/>
           <div class="row">
-            <div class="col-sm-4">
-              
-              <div id="htmlwidget_container_dt_out">
-                <div id="htmlwidget_dt_out" style="width:100%;height:100%;" class="datatables html-widget html-widget-output"></div>
+            <div style="height: 400px;">
+              <div class="col-sm-2">
+                <button id="highchart" type="button" class="btn btn-default action-button">update highchart</button>
               </div>
-              
+              <div class="col-sm-10">
+                  <div id="htmlwidget_container_highchart_out">
+                    <div id="htmlwidget_highchart_out" style="width:100%;height:100%;" class="highchart html-widget"></div>
+                  </div>
+              </div>
             </div>
-            <div class="col-sm-4">
-              
-              <div id="htmlwidget_container_highchart_out">
-                <div id="htmlwidget_highchart_out" style="width:100%;height:100%;" class="highchart html-widget html-widget-output"></div>
+          </div>
+          <div class="row">
+            <div style="height: 400px;">
+              <div class="col-sm-2">
+                <button id="plotly" type="button" class="btn btn-default action-button">update plotly</button>
               </div>
-              
-            </div>
-            <div class="col-sm-4">
-              
-              <div id="htmlwidget_container_plotly_out">
-                <div id="htmlwidget_plotly_out" style="width:100%;height:100%; " class="plotly html-widget html-widget-output"></div>
+              <div class="col-sm-10">
+                  <div id="htmlwidget_container_plotly_out">
+                    <div id="htmlwidget_plotly_out" style="width:100%;height:400px;" class="plotly html-widget"></div>
+                  </div>
               </div>
-              
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
-<script type="application/htmlwidget-sizing" data-for="htmlwidget_dt_out">{"browser":{"width":"100%","height":"100%","padding":40,"fill":false}}</script>
-<script type="application/htmlwidget-sizing" data-for="htmlwidget_highchart_out">{"browser":{"width":"100%","height":"100%","padding":40,"fill":false}}</script>
-<script type="application/htmlwidget-sizing" data-for="htmlwidget_plotly_out">{"browser":{"width":"100%","height":"100%","padding":40,"fill":false}}</script>  
+
+<script type="application/htmlwidget-sizing" data-for="htmlwidget_dt_out">{"browser":{"width":"100%","height":400,"padding":40,"fill":true}}</script>
+<script type="application/htmlwidget-sizing" data-for="htmlwidget_highchart_out">{"browser":{"width":"100%","height":400,"padding":40,"fill":true}}</script>
+<script type="application/htmlwidget-sizing" data-for="htmlwidget_plotly_out">{"browser":{"width":"100%","height":400,"padding":40,"fill":true}}</script>
 
 <script type = "text/javascript" language = "javascript">
-
-   $(document).ready(function() {
-      $("#dt").click(function(event){
-         $.support.cors = true;
-         $("#dt").prop("disabled", true);
-         $("#htmlwidget_dt_out").removeClass("html-widget-static-bound");
-         $.ajax({
-           url: "http://10.74.54.203:8000/widget",
-           data: { element_id: "dt_out", type: "src" },
-           contentType: 'application/json; charset=UTF-8',
-           error: function(err) {
-             console.log(err)
-             $("#dt").removeAttr('disabled');
-           },
-           success: function(data) {
-              console.log(data)
-              if($('script[type="application/json"][data-for="htmlwidget_dt_out"]').length == 0) {
-                $('body').append(data)
-              } else {
-                $('script[type="application/json"][data-for="htmlwidget_iris_out"]').replaceWith(data)
+    function req(elem, tpe) {
+     var btn_id = "#" + elem;
+     var widget_id = "#htmlwidget_" + elem + "_out";
+     var elem_id = elem + "_out";
+     var data_for = "htmlwidget_" + elem + "_out";
+     var scr_selector = 'script[type="application/json"][data-for="' + data_for + '"]';
+      
+     $.support.cors = true;
+     $(btn_id).prop("disabled", true);
+     $(widget_id).removeClass("html-widget-static-bound");
+     $.ajax({
+       url: "http://10.74.54.203:8000/widget",
+       data: { element_id: elem_id, type: tpe },
+       error: function(err) {
+         $(btn_id).removeAttr('disabled');
+       },
+       success: function(data) {
+          //console.log(data)
+          if($(scr_selector).length == 0) {
+            $('body').append(data)
+          } else {
+            if (elem.includes('plotly')) {
+              try {
+                //Plotly.deleteTraces(htmlwidget_plotly_out, [0])
+                Plotly.purge(data_for);
               }
-              setTimeout(function(){
-                window.HTMLWidgets.staticRender();
-              }, 1000);
-              $("#dt").removeAttr('disabled');
-           }
-         });
-         
+              catch(err) {
+                console.log(err);
+              }
+            }
+            $(scr_selector).replaceWith(data);
+          }
+          setTimeout(function(){
+            window.HTMLWidgets.staticRender();
+          }, 500);
+          $(btn_id).removeAttr('disabled');
+       }
+     });      
+    }
+    
+    $(document).ready(function() {
+      $("#dt").click(function() {
+        req('dt', 'src');
       });
-   });
-
-
-
-
-
+    });
+    
+    $(document).ready(function() {
+      $("#highchart").click(function() {
+        req('highchart', 'src');
+      });
+    });
+    
+    $(document).ready(function() {
+      $("#plotly").click(function() {
+        req('plotly', 'src');
+      });
+    });
 
 </script>
-  
-</body>
 
+
+</body>
 </html>

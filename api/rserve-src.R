@@ -24,7 +24,7 @@ process_request <- function(url, query, body, headers) {
   request$headers <- parse_headers(headers)
   if ("request-method" %in% names(request$headers))
     request$method <- c(request$headers["request-method"])
-
+  
   set_headers <- function(...) {
     paste(list(...), collapse = '\r\n')
   }
@@ -34,10 +34,9 @@ process_request <- function(url, query, body, headers) {
   h3 <- 'Access-Control-Allow-Origin: *'
   
   cors_headers <- set_headers(h2, h3)
-  headers <- character(0)
-  
+
   if (request$method == 'OPTIONS') {
-    return (list(character(0), character(0), cors_headers))
+    return (list('', 'text/plain', cors_headers))
   }
   
   request$pars <- list()
@@ -69,7 +68,7 @@ process_request <- function(url, query, body, headers) {
   message(sprintf('Content Type: %s', content_type))
   message('Params:')
   print(do.call(c, request$pars))
-
+  
   #### building output object
   ## generate payload (function output)
   ## currently function name must match to resource path
@@ -80,7 +79,7 @@ process_request <- function(url, query, body, headers) {
   }, error = function(err) {
     'Internal Server Error'
   })
-
+  
   return (list(payload, content_type, cors_headers))
 }
 

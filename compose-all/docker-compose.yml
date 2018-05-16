@@ -2,14 +2,14 @@ version: '3'
 services:
   demo:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: ./compose-all/Dockerfile
     command: /init
     privileged: true
     volumes:
-      - ./api:/home/rstudio/api
-      - ./javascript:/home/rstudio/javascript
-      - ./shiny:/srv/shiny-server/shiny
+      - ../api:/home/rstudio/api
+      - ../javascript:/home/rstudio/javascript
+      - ../shiny:/srv/shiny-server/shiny
     ports:
       - "8000:8000"
       - "7000:7000"
