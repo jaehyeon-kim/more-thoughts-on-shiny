@@ -29,11 +29,11 @@ process_request <- function(url, query, body, headers) {
     paste(list(...), collapse = '\r\n')
   }
   
-  #h1 <- 'Access-Control-Allow-Headers: Content-Type'
+  h1 <- 'Access-Control-Allow-Headers: Content-Type'
   h2 <- 'Access-Control-Allow-Methods: POST,GET,OPTIONS'
   h3 <- 'Access-Control-Allow-Origin: *'
   
-  cors_headers <- set_headers(h2, h3)
+  cors_headers <- set_headers(h1, h2, h3)
 
   if (request$method == 'OPTIONS') {
     return (list('', 'text/plain', cors_headers))
