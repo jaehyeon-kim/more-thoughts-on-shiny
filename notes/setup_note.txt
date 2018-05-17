@@ -1,0 +1,30 @@
+Rscript -e "cat(system.file(package='shiny'))"
+
+cp -R /usr/local/lib/R/site-library/shiny/www/shared /home/rstudio/javascript/public
+cp -R /usr/local/lib/R/site-library/DT/htmlwidgets /home/rstudio/javascript/public/datatables
+cp -R /usr/local/lib/R/site-library/highcharter/htmlwidgets /home/rstudio/javascript/public/highcharter
+cp -R /usr/local/lib/R/site-library/plotly/htmlwidgets /home/rstudio/javascript/public/plotly
+cp -R /usr/local/lib/R/site-library/crosstalk/www /home/rstudio/javascript/public/crosstalk
+cp -R /usr/local/lib/R/site-library/htmlwidgets/www /home/rstudio/javascript/public/htmlwidgets
+
+python serve.py -p 7000
+
+curl -H "Content-Type: application/json" -X POST \
+    -d '{"element_id": "dt_out", "type": "json"}' \
+    http://10.74.54.203:8000/widget
+    
+curl -H "Content-Type: application/json" -X POST \
+    -d '{"element_id": "highchart_out", "type": "src"}' \
+    http://10.74.54.203:8000/widget
+    
+curl -H "Content-Type: application/json" -X POST \
+    -d '{"element_id": "highchart_out", "type": "src"}' \
+    http://10.74.54.203:8000/widget
+    
+curl 'http://10.74.54.203:8000/widget?element_id=dt_out&type=src'
+
+curl -i -X OPTIONS 'http://10.74.54.203:8000/widget?element_id=dt_out&type=src'
+
+curl -H "Content-Type: application/json" -X POST \
+    -d '{"element_id": "highchart_out", "type": "html"}' \
+    http://10.74.54.203:8000/widget

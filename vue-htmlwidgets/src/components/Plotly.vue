@@ -1,24 +1,30 @@
 <template>
-    <v-container fluid>
-        <v-layout row wrap>
-            <v-flex xs1 sm2 md2>
-                <div style="height: 400px">
-                    <v-btn 
-                        @click="update"
-                        color="primary"
-                    >update plotly</v-btn>
-                    <div v-if="isLoading" style="margin: 0 auto; width: 50%;">
-                        <v-progress-circular indeterminate color="info"></v-progress-circular>
-                    </div>
-                </div>
-            </v-flex>
-            <v-flex xs10 sm10 md10>
-                <div style="height: 400px">
-                    <div v-if="!isLoading" v-html="dat"></div>
-                </div>
-            </v-flex>
-        </v-layout>
-    </v-container>
+    <v-layout>
+        <v-flex xs12 sm6 offset-sm2>
+            <v-card>
+                <v-card-media height="400px">
+                    <v-container>
+                        <v-layout row wrap justify-center>
+                            <div v-if="!isLoading" v-html="dat"></div>
+                        </v-layout>
+                    </v-container>                    
+                </v-card-media>
+                <v-card-actions>
+                    <v-container>
+                        <v-layout row wrap justify-center>                        
+                            <v-btn 
+                                @click="update"
+                                color="primary"
+                            >update table</v-btn>
+                            <div v-if="isLoading">
+                                <v-progress-circular indeterminate color="info"></v-progress-circular>
+                            </div>                        
+                        </v-layout>
+                    </v-container>
+                </v-card-actions>
+            </v-card>
+        </v-flex>
+    </v-layout>
 </template>
 
 <script>
@@ -37,8 +43,8 @@ export default {
             let params = { element_id: 'plotly_out', type: 'html' }
             axios.post('http://10.74.54.203:8000/widget', params)
                 .then(res => {
-                    console.log(res.data)
-                    this.dat = res.data
+                    this.dat = res.data.replace('width:100%;', 'width:100%')
+                    console.log(this.dat)
                     setTimeout(function() {
                         window.HTMLWidgets.staticRender()
                     }, 500)
