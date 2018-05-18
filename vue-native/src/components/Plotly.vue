@@ -1,5 +1,5 @@
 <template>
-    <vue-plotly :data="data" :layout="layout" :options="options"/>
+    <vue-plotly :data="plotlyData" :layout="layout" :options="options"/>
 </template>
 
 <script>
@@ -36,14 +36,15 @@ export default {
       visData() {
           return this.$store.getters['visData']
       },
-      data() {
+      plotlyData() {
           return this.getData()
       }
   },
   methods: {
     filterData(col, species) {
-        return this.visData.filter(x => x['Species'] === species)
-            .map(x => x[col])
+        return this.visData
+                    .filter(x => x['Species'] === species)
+                    .map(x => x[col])
     },
     getData() {
         return [

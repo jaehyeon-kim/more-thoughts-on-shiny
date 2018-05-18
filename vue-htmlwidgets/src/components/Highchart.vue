@@ -15,7 +15,7 @@
                             <v-btn 
                                 @click="update"
                                 color="primary"
-                            >update table</v-btn>
+                            >update highchart</v-btn>
                             <div v-if="isLoading">
                                 <v-progress-circular indeterminate color="info"></v-progress-circular>
                             </div>                        
