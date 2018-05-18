@@ -1,4 +1,5 @@
 library(magrittr)
+library(jsonlite)
 library(htmlwidgets)
 library(DT)
 library(highcharter)
@@ -96,4 +97,11 @@ widget <- function(element_id, type, get_all = FALSE, cdn = 'public', ...) {
     stop('Unexpected element')
   }
   write_widget(w, element_id, type, cdn)
+}
+
+hdata <- function() {
+  dat <- get_iris(TRUE)
+  names(dat) <- sub('\\.', '', names(dat))
+  dat %>% toJSON()
+    
 }
